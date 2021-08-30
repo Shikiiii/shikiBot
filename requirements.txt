@@ -1,2 +1,2 @@
-guilded.py==1.0.0
+git+https://github.com/shayypy/guilded.py
 requests
