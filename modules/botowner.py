@@ -41,7 +41,9 @@ async def _exec(ctx, *, code='await ctx.send("????")'):
         ctx = ctx
         bot = ctx.bot
         loop = bot.loop
-        exec(realcode)
+        scopes = globals()
+        scopes.update(locals())
+        exec(realcode, scopes, scopes)
         for task in asyncio.all_tasks(loop):
             if task.get_name() == "_exec":
                 if not task.cancelled():
