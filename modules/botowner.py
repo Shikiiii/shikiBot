@@ -33,8 +33,7 @@ async def _exec(ctx, *, code='await ctx.send("????")'):
     try:
         realcode = "async def exec_():\n"
         realcode += "\n".join([f"  {line}" for line in code.splitlines()])
-        realcode += "\nctx.bot.loop.create_task(exec_(), '_exec')"
-        await ctx.send(f"Running ```py\n{realcode}\n```")
+        realcode += "\nctx.bot.loop.create_task(exec_(), name='_exec')"
         exec(realcode, globals(), locals())
         for task in asyncio.all_tasks(ctx.bot.loop):
             if task.get_name() == '_exec':
