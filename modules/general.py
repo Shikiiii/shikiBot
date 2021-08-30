@@ -1,5 +1,7 @@
 from common_vars import *
 from imports import *
+# shiki - not sure if this should be here but i think it should be
+from modules.events import *
 
 @bot.command()
 async def snipe(ctx):
