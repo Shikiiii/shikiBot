@@ -32,8 +32,9 @@ async def _exec(ctx, *, code='await ctx.send("????")'):
         return
     try:
         code = "async def exec_():\n"
-        code += "\n".join([f"    {line}" for line in code.splitlines()])
+        code += "\n".join([f"  {line}" for line in code.splitlines()])
         code += "\nctx.bot.loop.create_task(exec_(), '_exec')"
+        await ctx.send(f"Running ```py\n{code}\n```")
         exec(code, globals(), locals())
         for task in asyncio.all_tasks(ctx.bot.loop):
             if task.get_name() == '_exec':
