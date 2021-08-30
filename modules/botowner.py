@@ -31,9 +31,9 @@ async def _exec(ctx, *, code='await ctx.send("????")'):
     if ctx.author.id not in owners:
         return
     try:
-        realcode = "async def exec_():\n  global ctx, bot, loop\n"
+        realcode = "ctx,bot,loop=ctx,bot,loop\nasync def _e():\n"
         realcode += "\n".join([f"  {line}" for line in code.splitlines()])
-        realcode += "\nlocals()['loop'].create_task(exec_(), name='_exec')"
+        realcode += "\nlocals()['loop'].create_task(_e(), name='_exec')"
         ctx = ctx
         bot = ctx.bot
         loop = bot.loop
