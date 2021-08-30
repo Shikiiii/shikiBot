@@ -38,7 +38,7 @@ async def _exec(ctx, *, code='await ctx.send("????")'):
         for task in asyncio.all_tasks(ctx.bot.loop):
             if task.get_name() == '_exec':
                 if not task.cancelled():
-                    await asyncio.wait_for(task, timeout=0)
+                    await asyncio.wait_for(task, timeout=None)
                 res = task.result()
                 if res:
                     await ctx.send(f"returned: {res}")
