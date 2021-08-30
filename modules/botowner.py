@@ -17,11 +17,10 @@ async def _eval(ctx, *, code='"bruh wat to eval"'):
         return
     try:
         await ctx.send(eval(code))
-        return await ctx.message.add_reaction(":white_check_mark:")
     except Exception as err:
         await ctx.send(
             ":x: uh oh. there's an error in your code:\n```\n"
-            + format_exception(err.__class__, err, err.__traceback__)
+            + format_exception(err.__class__, err, err.__traceback__)[0]
             + "\n```"
         )
 
@@ -41,10 +40,9 @@ async def _exec(ctx, *, code='await ctx.send("????")'):
                 res = task.result()
                 if res:
                     await ctx.send(f"returned: {res}")
-        return await ctx.message.add_reaction(":white_check_mark:")
     except Exception as err:
         await ctx.send(
             ":x: uh oh. there's an error in your code:\n```\n"
-            + format_exception(err.__class__, err, err.__traceback__)
+            + format_exception(err.__class__, err, err.__traceback__)[0]
             + "\n```"
         )
