@@ -5,6 +5,7 @@ import imports
 from modules.events import *
 from contextlib import suppress
 from traceback import format_exception 
+import asyncio
 
 
 owners = ["AnbjoWYA", "dxDY9JEd"]
@@ -16,25 +17,34 @@ async def _eval(ctx, *, code='"bruh wat to eval"'):
         return
     try:
         await ctx.send(eval(code))
-        return await ctx.message.add_reaction("✅")
-    except Exception:
+        return await ctx.message.add_reaction(":white_check_mark:")
+    except Exception as err:
         await ctx.send(
             ":x: uh oh. there's an error in your code:\n```\n"
-            + format_exception()
+            + format_exception(err.__class__, err, err.__traceback__)
             + "\n```"
         )
 
 
 @bot.command(name="exec", hidden=True)
-async def _exec(ctx, *, code='return "???????"'):
+async def _exec(ctx, *, code='await ctx.send("????")'):
     if ctx.author.id not in owners:
         return
     try:
+        code = "async def exec_():\n"
+        code += "\n".join([f"    {line}" for line in code.splitlines()])
+        code += "ctx.bot.loop.create_task(exec_(), '_exec')"
         exec(code, globals(), locals())
-        return await ctx.message.add_reaction("✅")
-    except Exception:
+        for task in asyncio.all_tasks():
+            if task.get_name() == '_exec':
+                asyncio.wait_for(task)
+                res = task.result()
+                if res:
+                    await ctx.send(f"returned: {res}")
+        return await ctx.message.add_reaction(":white_check_mark:")
+    except Exception as err:
         await ctx.send(
             ":x: uh oh. there's an error in your code:\n```\n"
-            + format_exception()
+            + format_exception(err.__class__, err, err.__traceback__)
             + "\n```"
         )
