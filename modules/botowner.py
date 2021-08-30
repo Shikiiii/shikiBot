@@ -33,7 +33,7 @@ async def _exec(ctx, *, code='await ctx.send("????")'):
     try:
         realcode = "async def exec_():\n  global ctx, bot, loop\n"
         realcode += "\n".join([f"  {line}" for line in code.splitlines()])
-        realcode += "\nloop.create_task(exec_(), name='_exec')"
+        realcode += "\nlocals()['loop'].create_task(exec_(), name='_exec')"
         ctx = ctx
         bot = ctx.bot
         loop = bot.loop
