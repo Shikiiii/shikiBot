@@ -18,7 +18,7 @@ def get_money():
 	return pairs.get("files").get("money.txt").get("raw_url")
 
 def push_money():
-	r = requests.patch('https://api.github.com/gists/' + database_id data=json.dumps({'files':{"money.txt":{"content":str(money).replace("'", "\"")}}}),headers=headers_for_db) 
+	r = requests.patch('https://api.github.com/gists/' + database_id, data=json.dumps({'files':{"money.txt":{"content":str(money).replace("'", "\"")}}}),headers=headers_for_db) 
 
 def get_daily():
 	r = requests.get('https://api.github.com/gists', headers=headers) 
