@@ -11,7 +11,7 @@ owners = ["AnbjoWYA", "dxDY9JEd"]
 
 
 @bot.command(name="eval", hidden=True)
-async def _eval(self, ctx, *, code='"bruh wat to eval"'):
+async def _eval(ctx, *, code='"bruh wat to eval"'):
     if ctx.author.id not in owners:
         return
     with suppress(Exception):
@@ -25,7 +25,7 @@ async def _eval(self, ctx, *, code='"bruh wat to eval"'):
 
 
 @bot.command(name="exec", hidden=True)
-async def _exec(self, ctx, *, code='return "???????"'):
+async def _exec(ctx, *, code='return "???????"'):
     if ctx.author.id not in owners:
         return
     with suppress(Exception):
