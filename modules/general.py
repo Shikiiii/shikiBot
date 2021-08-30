@@ -1,4 +1,5 @@
 from common_vars import *
+from imports import *
 
 @bot.command()
 async def snipe(ctx):
