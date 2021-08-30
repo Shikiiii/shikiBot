@@ -1,4 +1,4 @@
-import imports
+from imports import *
 
 bot = commands.Bot(command_prefix='s!', owner_id='AnbjoWYA') 
 snipe_messages = {} # "channel.id": ["author.id", "message.id", "datetime"]
