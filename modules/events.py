@@ -21,13 +21,6 @@ async def on_ready():
 async def on_message(msg):
 	if msg.content == "s!ping" and msg.author.id != bot.user.id:
 		await msg.channel.send("Pong!")
-	elif msg.content.startswith("s!av") or msg.content.startswith("s!avatar") or msg.content.startswith("s!pfp"):
-		ctx = await bot.get_context(msg)
-		try:
-			await avatar(ctx, msg.content.split(" ")[1])
-		except:
-			await avatar(ctx, ctx.message.author.id)
-		return
 	elif msg.content.startswith("s!userinfo") or msg.content.startswith("s!uf") or msg.content.startswith("s!whois"):
 		await msg.channel.send(f"<@{msg.author.id}>, that command isn't functioning yet. It may be because of the current API limitations, or it's currently in the works. Whatever it is, it'll be here soon, very soon.")
 		#ctx = await bot.get_context(msg)
@@ -87,12 +80,7 @@ async def on_message(msg):
 @bot.event
 async def on_message_delete(msg):
 	print(f"Deleted message {msg.content} {msg.author} {msg.created_at}")
-	snipe_messages[f'{msg.channel.id}'] = [f"{msg.author.id}", f"{msg.content}", f"{msg.created_at}"]
-	snipe_channels.append(msg.channel.id)
 
 @bot.event
 async def on_message_edit(old, new):
 	print(f"Edited message {new.content} {new.author} {new.edited_at}")
-	editsnipe_messages[f'{new.channel.id}'] = [f"{new.author.id}", f"{old.content}", f"{new.edited_at}"]
-	editsnipe_channels.append(new.channel.id)
-	
