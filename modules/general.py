@@ -66,3 +66,6 @@ class General(commands.Cog):
 		embed.set_image(url=avatar_url.replace('Large', 'Medium'))
 		embed.set_footer(text=f"req by {ctx.message.author.name}", icon_url=ctx.message.author.avatar_url)
 		await ctx.send(embed=embed)
+		
+def setup(bot):
+	bot.add_cog(General(bot))
