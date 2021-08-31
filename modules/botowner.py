@@ -2,7 +2,6 @@ from common_vars import *
 import imports
 from contextlib import suppress
 from traceback import format_exception
-import asyncio
 
 class BotOwner(commands.Cog):
     def __init__(self, bot):
