@@ -11,5 +11,9 @@ import modules.botowner
 @bot.command()
 async def myid(ctx):
     await ctx.send(ctx.message.author.id)
+    
+@bot.command()
+async def test(ctx, *, s):
+    await ctx.send(s)
 
 bot.run(os.environ.get("EMAIL"), os.environ.get("PASSWORD"))
