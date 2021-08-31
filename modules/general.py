@@ -67,5 +67,17 @@ class General(commands.Cog):
 		embed.set_footer(text=f"req by {ctx.message.author.name}", icon_url=ctx.message.author.avatar_url)
 		await ctx.send(embed=embed)
 		
+	@commands.Cog.listener()
+	async def cog_command_error(self, ctx, error):
+		if ctx.message.content.startswith("s!av") or ctx.message.content.startswith("s!pfp"):
+			c = ctx.message.content
+			if ((c == ("s!av")) or (c == ("s!pfp")) or (c == ("s!avatar"))):
+				embed = guilded.Embed(title=f"pfp of {ctx.message.author.name} ☁️", color=0x000000)
+				embed.set_image(url=usr_pfp)
+				embed.set_footer(text=f"req by {ctx.message.author.name}", icon_url=ctx.message.author.avatar_url)
+				await ctx.send(embed=embed)
+			else:
+				await ctx.send(f"<@{ctx.message.author.id}>, member not found. :(\nStuck? Check out `s!help`!")
+		
 def setup(bot):
 	bot.add_cog(General(bot))
