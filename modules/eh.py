@@ -8,10 +8,6 @@ async def on_command_error(ctx, error):
 	if ctx.message.content.startswith("s!av") or ctx.message.content.startswith("s!pfp"):
 		c = ctx.message.content
 		if ((c == ("s!av")) or (c == ("s!pfp")) or (c == ("s!avatar"))):
-			pg = urllib.request.urlopen(f'https://www.guilded.gg/api/users/{ctx.message.author.id}')
-			b = str(pg.read().decode('utf-8'))
-			user_data = json.loads(b)
-			usr_pfp = user_data.get("user").get("profilePicture").replace('Large', 'Medium')
 			embed = guilded.Embed(title=f"pfp of {ctx.message.author.name} ☁️", color=0x000000)
 			embed.set_image(url=usr_pfp)
 			embed.set_footer(text=f"req by {ctx.message.author.name}", icon_url=ctx.message.author.avatar_url)
