@@ -1,5 +1,7 @@
 from common_vars import *
 import imports
+from modules.economy import daily as daily
+from modules.economy import balance as balance
 
 @bot.event
 async def on_command_error(ctx, error):
