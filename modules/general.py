@@ -16,6 +16,16 @@ class General(commands.Cog):
 			return
 		await
 		
+	@commands.Cog.listener()
+	async def on_message_delete(self, msg):
+		snipe_messages[f'{msg.channel.id}'] = [f"{msg.author.id}", f"{msg.content}", f"{msg.created_at}"]
+		snipe_channels.append(msg.channel.id)
+
+	@commands.Cog.listener()
+	async def on_message_edit(self, old, new):
+		editsnipe_messages[f'{new.channel.id}'] = [f"{new.author.id}", f"{old.content}", f"{new.edited_at}"]
+		editsnipe_channels.append(new.channel.id)
+		
 	@commands.command()
 	async def snipe(self, ctx):
 		if ctx.message.channel.id in snipe_channels:
