@@ -1,5 +1,4 @@
 from common_vars import (
-    avatar,
     convert_time,
     editsnipe_channels,
     editsnipe_messages,
