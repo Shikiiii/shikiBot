@@ -58,3 +58,6 @@ class BotOwner(commands.Cog):
                 + "".join(format_exception(err.__class__, err, err.__traceback__))
                 + "\n```"
             )
+
+def setup(bot):
+    bot.add_cog(BotOwner(bot))
