@@ -10,7 +10,7 @@ from typing import Union, Any
 
 # temporary command
 @bot.command(name='id')
-async def _id(ctx, thing: Union[guilded.ChatChannel, guilded.ChatMessage, guilded.User, Any]):
+async def _id(ctx, thing: Union[guilded.ChatChannel, guilded.User, Any]):
     try:
         await ctx.send(thing.id)
     except:
