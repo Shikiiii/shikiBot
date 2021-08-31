@@ -1,6 +1,8 @@
 from common_vars import *
 import imports
 from modules.general import avatar as avatar
+from modules.economy import daily as daily
+from modules.economy import balance as balance
 from modules.eh import *
 
 @bot.event
