@@ -8,11 +8,11 @@ async def on_command_error(ctx, error):
 
 @bot.command()
 async def myid(ctx):
-    await ctx.send(ctx.message.author.id)
+	await ctx.send(ctx.message.author.id)
     
 @bot.command()
 async def test(ctx, *, s):
-    await ctx.send(s)
+	await ctx.send(s)
 
 bot.load_extension('modules.general')
 bot.load_extension('modules.economy')
