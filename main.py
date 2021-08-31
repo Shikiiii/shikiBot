@@ -1,5 +1,6 @@
 from common_vars import *
 from imports import *
+from typing import Union, Any
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -9,7 +10,15 @@ async def on_command_error(ctx, error):
 @bot.command()
 async def myid(ctx):
 	await ctx.send(ctx.message.author.id)
-    
+
+# temporary command
+@bot.command(name='id')
+async def _id(ctx, thing: Union[guilded.ChatChannel, guilded.User, Any]):
+    try:
+        await ctx.send(thing.id)
+    except:
+        pass
+
 @bot.command()
 async def test(ctx, *, s):
 	await ctx.send(s)
