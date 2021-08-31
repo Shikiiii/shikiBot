@@ -21,7 +21,10 @@ async def on_message(msg):
 		await msg.channel.send("Pong!")
 	elif msg.content.startswith("s!av") or msg.content.startswith("s!avatar") or msg.content.startswith("s!pfp"):
 		ctx = await bot.get_context(msg)
-		await avatar(ctx, msg.content.split(" ")[1])
+		try:
+			await avatar(ctx, msg.content.split(" ")[1])
+		except:
+			await avatar(ctx, ctx.message.author.id)
 		return
 	elif msg.content.startswith("s!userinfo") or msg.content.startswith("s!uf") or msg.content.startswith("s!whois"):
 		await msg.channel.send(f"<@{msg.author.id}>, that command isn't functioning yet. It may be because of the current API limitations, or it's currently in the works. Whatever it is, it'll be here soon, very soon.")
