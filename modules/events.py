@@ -1,5 +1,6 @@
 from common_vars import *
 import imports
+from modules.general import avatar
 
 @bot.event
 async def on_ready():
