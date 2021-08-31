@@ -56,5 +56,20 @@ class Economy(commands.Cog):
 			else:
 				await ctx.send(f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!")
 
+	@commands.Cog.listener()
+	async def cog_command_error(self, ctx, error):
+		if ctx.message.content.startswith("s!balance"):
+			c = ctx.message.content
+			if "s!balance" == c or "s!balance " == c:
+				await balance(ctx, ctx.message.author.id)
+			else:
+				await ctx.send(f"<@{ctx.message.author.id}>, member not found. :(\nStuck? Check out `s!help`!")
+		elif ctx.message.content.startswith("s!daily"):
+			c = ctx.message.content
+			if "s!daily" == c or "s!daily " == c:
+				await daily(ctx, ctx.message.author.id)
+			else:
+				await ctx.send(f"<@{ctx.message.author.id}>, member not found. :(\nStuck? Check out `s!help`!")
+				
 def setup(bot):
 	bot.add_cog(Economy(bot))
