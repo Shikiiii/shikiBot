@@ -55,3 +55,6 @@ class Economy(commands.Cog):
 				push_daily()
 			else:
 				await ctx.send(f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!")
+
+def setup(bot):
+	bot.add_cog(Economy(bot))
