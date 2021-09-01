@@ -125,7 +125,7 @@ class Events(commands.Cog):
                             "That command/module doesn't exist yet. Check out all the cool commands with `s!help`. :sunglasses:"
                         )
             return
-        #await self.bot.process_commands(msg)
+        await self.bot.process_commands(msg)
 
     @commands.Cog.listener()
     async def on_message_delete(self, msg):
