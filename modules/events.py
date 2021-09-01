@@ -18,7 +18,7 @@ class Events(commands.Cog):
         pg = urllib.request.urlopen(get_daily())
         b = str(pg.read().decode("utf-8"))
         claimed_daily = b.split(" ")
-        print(str(bot.all_commands))
+        print(str(self.bot.all_commands))
 
     @commands.Cog.listener()
     async def on_message(self, msg):
