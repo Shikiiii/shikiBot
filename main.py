@@ -16,6 +16,10 @@ async def on_command_error(ctx, error):
 async def on_message(msg):
     pass
 
+@bot.event
+async def on_ready():
+    print("all cogs have been loaded")
+    print(str(bot.all_commands))
 
 @bot.command()
 async def myid(ctx):
