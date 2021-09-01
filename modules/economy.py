@@ -68,9 +68,13 @@ class Economy(commands.Cog):
 
     @commands.Cog.listener('cog_command_error')
     async def _(self, ctx, error):
-        if isinstance(error, commands.MemberNotFound):
+        if isinstance(error, (commands.MemberNotFound, commands.BadArgument)):
             return await ctx.send(
                 f"<@{ctx.message.author.id}>, member not found. :(\nTry out our `s!help` command if you're stuck."
+            )
+        else:
+            return await ctx.send(
+                f"<@{ctx.message.author.id}>, something went wrong. :(\nTry out our `s!help` command if you're stuck."
             )
 
 
