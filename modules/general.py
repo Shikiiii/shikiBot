@@ -72,17 +72,6 @@ class General(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @commands.Cog.listener()
-    async def cog_command_error(self, ctx, error):
-        if isinstance(error, (commands.MemberNotFound, commands.BadArgument)):
-            await ctx.send(
-                f"<@{ctx.message.author.id}>, member not found. :(\nStuck? Check out `s!help`!"
-            )
-        else:
-            await ctx.send(
-                f"<@{ctx.message.author.id}>, something went wrong. :(\nStuck? Check out `s!help`!"
-            )
-
 
 def setup(bot):
     bot.add_cog(General(bot))
