@@ -61,7 +61,8 @@ class General(commands.Cog):
             )
 
     @commands.command(aliases=["av", "pfp"])
-    async def avatar(self, ctx, member: guilded.Member):
+    async def avatar(self, ctx, member: guilded.Member = None):
+        member = member or ctx.author
         embed = guilded.Embed(title=f"pfp of {member.name} ☁️", color=0x000000)
         avatar_url = str(member.avatar_url)
         embed.set_image(url=avatar_url.replace("Large", "Medium"))
@@ -70,17 +71,6 @@ class General(commands.Cog):
             icon_url=ctx.message.author.avatar_url,
         )
         await ctx.send(embed=embed)
-
-    @commands.Cog.listener('cog_command_error')
-    async def _(self, ctx, error):
-        if isinstance(error, (commands.MemberNotFound, commands.BadArgument)):
-            await ctx.send(
-                f"<@{ctx.message.author.id}>, member not found. :(\nStuck? Check out `s!help`!"
-            )
-        else:
-            await ctx.send(
-                f"<@{ctx.message.author.id}>, something went wrong. :(\nStuck? Check out `s!help`!"
-            )
 
 
 def setup(bot):

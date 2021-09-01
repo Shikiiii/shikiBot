@@ -16,7 +16,8 @@ class Economy(commands.Cog):
             await ctx.send(f"<@{member.id}>'s balance is 100$.")
 
     @commands.command()
-    async def daily(self, ctx, member: guilded.Member):
+    async def daily(self, ctx, member: guilded.Member = None):
+        member = member or ctx.author
         if member.id in money:
             # ...
             if member.id not in claimed_daily:
@@ -57,18 +58,6 @@ class Economy(commands.Cog):
                 await ctx.send(
                     f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!"
                 )
-
-    @commands.Cog.listener("cog_command_error")
-    async def _(self, ctx, error):
-        if isinstance(error, (commands.MemberNotFound, commands.BadArgument)):
-            return await ctx.send(
-                f"<@{ctx.message.author.id}>, member not found. :(\nTry out our `s!help` command if you're stuck."
-            )
-        else:
-            return await ctx.send(
-                f"<@{ctx.message.author.id}>, something went wrong. :(\nTry out our `s!help` command if you're stuck."
-            )
-
 
 def setup(bot):
     bot.add_cog(Economy(bot))
