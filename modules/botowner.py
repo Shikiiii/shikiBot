@@ -6,7 +6,7 @@ from imports import asyncio, commands
 class BotOwner(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.owners = ["AnbjoWYA", "dxDY9JEd"]
+        self.owners = ["AnbjoWYA", "dxDY9JEd", "4WPbEZwd"]
 
     @commands.command(name="eval", hidden=True)
     async def _eval(self, ctx, *, code='"bruh wat to eval"'):
