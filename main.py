@@ -5,6 +5,11 @@ from imports import guilded, os, sys, traceback
 
 
 @bot.event
+async def on_message(msg):
+    await bot.process_commands(msg)
+
+
+@bot.event
 async def on_command_error(ctx, error):
     print("Ignoring exception in command {}:".format(ctx.command), file=sys.stderr)
     traceback.print_exception(type(error), error, None, file=sys.stderr)
@@ -30,6 +35,7 @@ async def test(ctx, *, s):
 
 
 bot.load_extension("gishaku")
+bot.load_extension("modules.events")
 bot.load_extension("modules.general")
 bot.load_extension("modules.economy")
 bot.load_extension("modules.botowner")
