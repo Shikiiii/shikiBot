@@ -1,4 +1,3 @@
 git+https://github.com/windowsboy111/guilded.py@master
 requests
 git+https://github.com/windowsboy111/gishaku
-discord.py
