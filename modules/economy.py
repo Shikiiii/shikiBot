@@ -16,7 +16,8 @@ class Economy(commands.Cog):
             await ctx.send(f"<@{member.id}>'s balance is 100$.")
 
     @commands.command()
-    async def daily(self, ctx, member: guilded.Member):
+    async def daily(self, ctx, member: guilded.Member = None):
+        member = member or ctx.author
         if member.id in money:
             # ...
             if member.id not in claimed_daily:
