@@ -1,14 +1,6 @@
 import guilded
-from common_vars import (
-    commands,
-    money,
-    claimed_daily,
-    commands,
-    money,
-    push_daily,
-    push_money,
-    register_in_money_db,
-)
+from common_vars import (claimed_daily, commands, money, push_daily,
+                         push_money, register_in_money_db)
 
 
 class Economy(commands.Cog):
@@ -66,7 +58,7 @@ class Economy(commands.Cog):
                     f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!"
                 )
 
-    @commands.Cog.listener('cog_command_error')
+    @commands.Cog.listener("cog_command_error")
     async def _(self, ctx, error):
         if isinstance(error, (commands.MemberNotFound, commands.BadArgument)):
             return await ctx.send(
