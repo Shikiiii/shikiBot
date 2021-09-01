@@ -135,6 +135,10 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, old, new):
         print(f"Edited message {new.content} {new.author} {new.edited_at}")
+        
+    @commands.command()
+    async def testevents(self, ctx):
+        await ctx.send("command exists")
 
 
 def setup(bot):
