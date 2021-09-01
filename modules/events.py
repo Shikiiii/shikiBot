@@ -124,6 +124,7 @@ class Events(commands.Cog):
                         await msg.channel.send(
                             "That command/module doesn't exist yet. Check out all the cool commands with `s!help`. :sunglasses:"
                         )
+            return
         #await self.bot.process_commands(msg)
 
     @commands.Cog.listener()
