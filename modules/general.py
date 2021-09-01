@@ -13,16 +13,6 @@ class General(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_message(self, msg):
-        if msg.content.startswith(("s!av", "s!avatar", "s!pfp")):
-            ctx = await self.bot.get_context(msg)
-            try:
-                await avatar(ctx, msg.content.split(" ")[1])
-            except Exception:
-                await avatar(ctx, ctx.message.author.id)
-            return
-
-    @commands.Cog.listener()
     async def on_message_delete(self, msg):
         snipe_messages[f"{msg.channel.id}"] = [
             f"{msg.author.id}",
@@ -71,15 +61,7 @@ class General(commands.Cog):
             )
 
     @commands.command(aliases=["av", "pfp"])
-    async def avatar(self, ctx, user):
-        conv = commands.converters.MemberConverter()
-        try:
-            member = await conv.convert(ctx, user)
-        except Exception:
-            await ctx.send(
-                f"<@{ctx.message.author.id}>, member not found. :(\nTry out our `s!help` command if you're stuck."
-            )
-            return
+    async def avatar(self, ctx, member: guilded.Member):
         embed = guilded.Embed(title=f"pfp of {member.name} ☁️", color=0x000000)
         avatar_url = str(member.avatar_url)
         embed.set_image(url=avatar_url.replace("Large", "Medium"))
@@ -91,24 +73,14 @@ class General(commands.Cog):
 
     @commands.Cog.listener('cog_command_error')
     async def _(self, ctx, error):
-        if ctx.message.content.startswith(("s!av", "s!pfp")):
-            c = ctx.message.content
-            if c in ("s!av", "s!pfp", "s!avatar"):
-                embed = guilded.Embed(
-                    title=f"pfp of {ctx.message.author.name} ☁️", color=0x000000
-                )
-                embed.set_image(
-                    url=str(ctx.message.author.avatar_url).replace("Large", "Medium")
-                )
-                embed.set_footer(
-                    text=f"req by {ctx.message.author.name}",
-                    icon_url=ctx.message.author.avatar_url,
-                )
-                await ctx.send(embed=embed)
-            else:
-                await ctx.send(
-                    f"<@{ctx.message.author.id}>, member not found. :(\nStuck? Check out `s!help`!"
-                )
+        if isinstance(error, (commands.MemberNotFound, commands.BadArgument)):
+            await ctx.send(
+                f"<@{ctx.message.author.id}>, member not found. :(\nStuck? Check out `s!help`!"
+            )
+        else:
+            await ctx.send(
+                f"<@{ctx.message.author.id}>, something went wrong. :(\nStuck? Check out `s!help`!"
+            )
 
 
 def setup(bot):

@@ -1,13 +1,13 @@
-from common_vars import *
-import imports
-from contextlib import suppress
 from traceback import format_exception
+
+from imports import asyncio, commands
+
 
 class BotOwner(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.owners = ["AnbjoWYA", "dxDY9JEd"]
-        
+
     @commands.command(name="eval", hidden=True)
     async def _eval(self, ctx, *, code='"bruh wat to eval"'):
         if ctx.author.id not in self.owners:
@@ -21,7 +21,6 @@ class BotOwner(commands.Cog):
                 + "".join(format_exception(err.__class__, err, err.__traceback__))
                 + "\n```"
             )
-
 
     @commands.command(name="exec", hidden=True)
     async def _exec(self, ctx, *, code='await ctx.send("????")'):
@@ -57,6 +56,7 @@ class BotOwner(commands.Cog):
                 + "".join(format_exception(err.__class__, err, err.__traceback__))
                 + "\n```"
             )
+
 
 def setup(bot):
     bot.add_cog(BotOwner(bot))
