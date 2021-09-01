@@ -9,6 +9,9 @@ async def on_command_error(ctx, error):
     print("Ignoring exception in command {}:".format(ctx.command), file=sys.stderr)
     traceback.print_exception(type(error), error, None, file=sys.stderr)
 
+@bot.event
+async def on_message(msg):
+    pass
 
 @bot.command()
 async def myid(ctx):
