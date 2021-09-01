@@ -1,7 +1,9 @@
 from typing import Any, Union
 
-from common_vars import bot
 from imports import guilded, os, sys, traceback
+
+
+bot = commands.Bot(command_prefix="s!", owner_ids=["AnbjoWYA", "dxDY9JEd"])
 
 
 @bot.event
@@ -9,9 +11,11 @@ async def on_command_error(ctx, error):
     print("Ignoring exception in command {}:".format(ctx.command), file=sys.stderr)
     traceback.print_exception(type(error), error, None, file=sys.stderr)
 
+
 @bot.event
 async def on_message(msg):
     pass
+
 
 @bot.command()
 async def myid(ctx):

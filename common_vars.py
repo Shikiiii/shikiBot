@@ -1,6 +1,5 @@
 from imports import commands, requests, json, os
 
-bot = commands.Bot(command_prefix="s!", owner_id="AnbjoWYA")
 snipe_messages = {}  # "channel.id": ["author.id", "message.id", "datetime"]
 snipe_channels = []  # a list with the channels currently available for `snipe`
 editsnipe_messages = {}  # "channel.id": ["author.id", "message.id", "datetime"]
