@@ -12,15 +12,15 @@ class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # @commands.Cog.listener()
-    # async def on_message(self, msg):
-    #     if msg.content.startswith(("s!av", "s!avatar", "s!pfp")):
-    #         ctx = await self.bot.get_context(msg)
-    #         try:
-    #             await self.avatar(ctx, msg.content.split(" ")[1])
-    #         except Exception:
-    #             await self.avatar(ctx, ctx.message.author.id)
-    #         return
+    @commands.Cog.listener()
+    async def on_message(self, msg):
+        if msg.content.startswith(("s!av", "s!avatar", "s!pfp")):
+            ctx = await self.bot.get_context(msg)
+            try:
+                await avatar(ctx, msg.content.split(" ")[1])
+            except Exception:
+                await avatar(ctx, ctx.message.author.id)
+            return
 
     @commands.Cog.listener()
     async def on_message_delete(self, msg):

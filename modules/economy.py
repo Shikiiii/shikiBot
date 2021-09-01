@@ -1,5 +1,7 @@
 import guilded
 from common_vars import (
+    commands,
+    money,
     claimed_daily,
     commands,
     money,
