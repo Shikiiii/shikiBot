@@ -30,6 +30,7 @@ async def test(ctx, *, s):
 
 
 bot.load_extension("gishaku")
+bot.load_extension("modules.events")
 bot.load_extension("modules.general")
 bot.load_extension("modules.economy")
 bot.load_extension("modules.botowner")

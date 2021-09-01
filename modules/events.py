@@ -133,3 +133,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, old, new):
         print(f"Edited message {new.content} {new.author} {new.edited_at}")
+
+
+def setup(bot):
+    bot.add_cog(Events(bot))
