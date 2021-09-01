@@ -1,5 +1,4 @@
 from common_vars import (
-    avatar,
     convert_time,
     editsnipe_channels,
     editsnipe_messages,
@@ -13,15 +12,15 @@ class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_message(self, msg):
-        if msg.content.startswith(("s!av", "s!avatar", "s!pfp")):
-            ctx = await self.bot.get_context(msg)
-            try:
-                await avatar(ctx, msg.content.split(" ")[1])
-            except Exception:
-                await avatar(ctx, ctx.message.author.id)
-            return
+    # @commands.Cog.listener()
+    # async def on_message(self, msg):
+    #     if msg.content.startswith(("s!av", "s!avatar", "s!pfp")):
+    #         ctx = await self.bot.get_context(msg)
+    #         try:
+    #             await self.avatar(ctx, msg.content.split(" ")[1])
+    #         except Exception:
+    #             await self.avatar(ctx, ctx.message.author.id)
+    #         return
 
     @commands.Cog.listener()
     async def on_message_delete(self, msg):
@@ -71,6 +70,7 @@ class General(commands.Cog):
                 "There's no edited messages to snipe... (yet :thinking_face:)"
             )
 
+    @commands.command(aliases=["av", "pfp"])
     async def avatar(self, ctx, user):
         conv = commands.converters.MemberConverter()
         try:
@@ -89,8 +89,8 @@ class General(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @commands.Cog.listener()
-    async def cog_command_error(self, ctx, error):
+    @commands.Cog.listener('cog_command_error')
+    async def _(self, ctx, error):
         if ctx.message.content.startswith(("s!av", "s!pfp")):
             c = ctx.message.content
             if c in ("s!av", "s!pfp", "s!avatar"):

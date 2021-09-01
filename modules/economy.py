@@ -1,12 +1,11 @@
+import guilded
 from common_vars import (
+    claimed_daily,
     commands,
     money,
-    claimed_daily,
+    push_daily,
     push_money,
     register_in_money_db,
-    push_daily,
-    balance,
-    daily,
 )
 
 
@@ -15,15 +14,7 @@ class Economy(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def balance(self, ctx, user):
-        conv = commands.converters.MemberConverter()
-        try:
-            member = await conv.convert(ctx, user)
-        except:
-            await ctx.send(
-                f"<@{ctx.message.author.id}>, member not found. :(\nTry out our `s!help` command if you're stuck."
-            )
-            return
+    async def balance(self, ctx, member: guilded.Member):
         if member.id in money:
             await ctx.send(f"<@{member.id}>'s balance is {money.get(member.id)}$.")
         else:
@@ -31,15 +22,7 @@ class Economy(commands.Cog):
             await ctx.send(f"<@{member.id}>'s balance is 100$.")
 
     @commands.command()
-    async def daily(self, ctx, user):
-        conv = commands.converters.MemberConverter()
-        try:
-            member = await conv.convert(ctx, user)
-        except Exception:
-            await ctx.send(
-                f"<@{ctx.message.author.id}>, member not found. :(\nTry out our `s!help` command if you're stuck."
-            )
-            return
+    async def daily(self, ctx, member: guilded.Member):
         if member.id in money:
             # ...
             if member.id not in claimed_daily:
@@ -81,24 +64,12 @@ class Economy(commands.Cog):
                     f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!"
                 )
 
-    @commands.Cog.listener()
-    async def cog_command_error(self, ctx, error):
-        if ctx.message.content.startswith("s!balance"):
-            c = ctx.message.content
-            if "s!balance" == c or "s!balance " == c:
-                await balance(ctx, ctx.message.author.id)
-            else:
-                await ctx.send(
-                    f"<@{ctx.message.author.id}>, member not found. :(\nStuck? Check out `s!help`!"
-                )
-        elif ctx.message.content.startswith("s!daily"):
-            c = ctx.message.content
-            if "s!daily" == c or "s!daily " == c:
-                await daily(ctx, ctx.message.author.id)
-            else:
-                await ctx.send(
-                    f"<@{ctx.message.author.id}>, member not found. :(\nStuck? Check out `s!help`!"
-                )
+    @commands.Cog.listener('cog_command_error')
+    async def _(self, ctx, error):
+        if isinstance(error, commands.MemberNotFound):
+            return await ctx.send(
+                f"<@{ctx.message.author.id}>, member not found. :(\nTry out our `s!help` command if you're stuck."
+            )
 
 
 def setup(bot):
