@@ -1,6 +1,12 @@
 import guilded
-from common_vars import (claimed_daily, commands, money, push_daily,
-                         push_money, register_in_money_db)
+from common_vars import (
+    claimed_daily,
+    commands,
+    money,
+    push_daily,
+    push_money,
+    register_in_money_db,
+)
 
 
 class Economy(commands.Cog):
@@ -59,6 +65,7 @@ class Economy(commands.Cog):
                 await ctx.send(
                     f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!"
                 )
+
 
 def setup(bot):
     bot.add_cog(Economy(bot))
