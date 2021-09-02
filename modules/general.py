@@ -72,6 +72,78 @@ class General(commands.Cog):
         )
         await ctx.send(embed=embed)
 
+    @commands.command(aliases=["?", "cmds", "commands"])
+    async def help(self, ctx, *, query: str = ""):
+        """Shows this message"""
+        bot = ctx.bot
+        pre = ctx.prefix
+        # check if user wants help for global cog
+        if query.lower() == "global":
+            em = guilded.Embed(title="Command list (global)", color=0x0000FF)
+            for cmd in bot.walk_commands():
+                em.add_field(name=cmd.name, value=cmd.short_doc or "<no help>")
+            return await ctx.send(embed=em)
+        # check if user wants help for a cog
+        for cog_name, cog in bot.cogs.items():
+            if cog_name.lower() == query.lower():
+                em = guilded.Embed(
+                    title="Command list",
+                    description=f"wd: `/{cog.qualified_name}`",
+                )
+                for cmd in cog.walk_commands():
+                    if any(cmd.parents) or " " in cmd.qualified_name:
+                        continue
+                    em.add_field(name=cmd.name, value=cmd.short_doc or "<no help>")
+                return await ctx.send(embed=em)
+        # show help for command
+        if query:
+            cmd = await bot.get_command(query, i=ctx.message)
+            if not cmd or cmd.hidden:
+                return await ctx.send("help: :mag: Command not found.")
+            em = guilded.Embed(
+                title=cmd.name,
+                description=cmd.description or "<no description>",
+                color=0x0000FF,
+            )
+            usage = pre + cmd.qualified_name + " "
+            for val in cmd.clean_params.values():
+                usage += f"<{val.name}>" if val.default else f"<[{val.name}]> "
+            em.add_field(name="Objective", value=cmd.help)
+            em.add_field(name="Usage", value=usage)
+            em.add_field(
+                name="Cog",
+                value="<global>" if not cmd.cog else cmd.cog.qualified_name,
+            )
+            if cmd.aliases:
+                em.add_field(
+                    name="Aliases",
+                    value=", ".join(cmd.aliases),
+                )
+            if hasattr(cmd, "commands") and any(cmd.commands):
+                # it is a group
+                em.add_field(
+                    name="Sub-Commands",
+                    value="".join(
+                        [
+                            f"`{pre}{cmd.qualified_name}`: {cmd.short_doc}\n"
+                            for cmd in cmd.commands
+                        ]
+                    ),
+                )
+            await ctx.send(embed=em)
+            return
+        # no command name supplied, list all cogs
+        em = guilded.Embed(title="Cogs list (Not Commands!)")
+        for cog in bot.cogs.values():
+            em.add_field(
+                name=cog.qualified_name,
+                value=cog.description or "<no description>",
+            )
+            em.set_footer(
+                text="These are not commands, but groups of commands. `/help core` and stuff"
+            )
+        await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(General(bot))

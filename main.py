@@ -2,7 +2,7 @@ from typing import Any, Union
 
 from imports import commands, guilded, os, sys, traceback
 
-bot = commands.Bot(command_prefix="s!", owner_ids=["AnbjoWYA", "dxDY9JEd"])
+bot = commands.Bot(command_prefix="s!", owner_ids=["AnbjoWYA", "dxDY9JEd"], help_command=None)
 
 
 @bot.event
