@@ -7,8 +7,9 @@ class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def balance(self, ctx, member: guilded.Member):
+    @commands.command(aliases=["bal"])
+    async def balance(self, ctx, member: guilded.Member = None):
+        member = member or ctx.author
         if member.id in money:
             await ctx.send(f"<@{member.id}>'s balance is {money.get(member.id)}$.")
         else:
