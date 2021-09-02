@@ -20,32 +20,6 @@ async def on_ready():
     print("all cogs have been loaded")
     print(str(bot.all_commands))
 
-@bot.command()
-async def myid(ctx):
-    await ctx.send(ctx.message.author.id)
-
-
-# temporary command
-@bot.command(name="id")
-async def _id(ctx, thing: Union[guilded.ChatChannel, guilded.User, Any]):
-    try:
-        await ctx.send(thing.id)
-    except Exception:
-        pass
-
-
-@bot.command()
-async def test(ctx, *, s):
-    await ctx.send(s)
-    
-@bot.command()
-async def allcmds(ctx):
-    await ctx.send(str(bot.all_commands))
-                   
-@bot.command()
-async def allcogs(ctx):
-    await ctx.send(str(bot.cogs))
-
 bot.load_extension("gishaku")
 bot.load_extension("modules.events")
 bot.load_extension("modules.general")
