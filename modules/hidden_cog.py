@@ -1,5 +1,6 @@
-from imports import commands, guilded, asyncio
-from traceback import format_exception
+from imports import commands, guilded, asyncio, os, sys
+from traceback import traceback, format_exception
+from typing import Any, Union
 
 class Hidden(commands.Cog):
     def __init__(self, bot):
