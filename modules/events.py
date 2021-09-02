@@ -66,7 +66,7 @@ class Events(commands.Cog):
         #             if module.lower() == "avatar":
         #                 embed = guilded.Embed(
         #                     title="`avatar`",
-        #                     description="Shows the avatar of the member you pointed to, or your own avatar, if you didn't point at anyone.\n\nUsage: `s!avatar (member)`\nExample: `s!avatar @shiki`\n\nAliases: `av`, `pfp`",
+        #                     description=" ",
         #                     color=0xFFFFFF,
         #                 )
         #                 embed.set_author(name=f"{msg.author.name}")

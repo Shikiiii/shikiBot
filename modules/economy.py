@@ -10,11 +10,18 @@ from common_vars import (
 
 
 class Economy(commands.Cog):
+    """be rich. be cool."""
+
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(aliases=["bal"])
     async def balance(self, ctx, member: guilded.Member = None):
+        """
+        Shows your amount of cash, or another user's amount.
+
+        Example: s!balance @member
+        """
         member = member or ctx.author
         if member.id in money:
             await ctx.send(f"<@{member.id}>'s balance is {money.get(member.id)}$.")
