@@ -1,8 +1,8 @@
-from typing import Any, Union
+from imports import commands, os, sys, traceback
 
-from imports import commands, guilded, os, sys, traceback
-
-bot = commands.Bot(command_prefix="s!", owner_ids=["AnbjoWYA", "dxDY9JEd"])
+bot = commands.Bot(
+    command_prefix="s!", owner_ids=["AnbjoWYA", "dxDY9JEd"], help_command=None
+)
 
 
 @bot.event
@@ -15,14 +15,17 @@ async def on_command_error(ctx, error):
 async def on_message(msg):
     pass
 
+
 @bot.event
 async def on_ready():
     print("all cogs have been loaded")
     print(str(bot.all_commands))
 
+
 bot.load_extension("gishaku")
+bot.load_extension("modules.economy")
+bot.load_extension("modules.errhdl")
 bot.load_extension("modules.events")
 bot.load_extension("modules.general")
-bot.load_extension("modules.economy")
-bot.load_extension("modules.botowner")
+bot.load_extension("modules.hidden_cog")
 bot.run(os.environ.get("EMAIL"), os.environ.get("PASSWORD"))

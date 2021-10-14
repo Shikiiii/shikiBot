@@ -1,14 +1,27 @@
 import guilded
-from common_vars import (claimed_daily, commands, money, push_daily,
-                         push_money, register_in_money_db)
+from common_vars import (
+    claimed_daily,
+    commands,
+    money,
+    push_daily,
+    push_money,
+    register_in_money_db,
+)
 
 
 class Economy(commands.Cog):
+    """be rich. be cool."""
+
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(aliases=["bal"])
     async def balance(self, ctx, member: guilded.Member = None):
+        """
+        Shows your amount of cash, or another user's amount.
+
+        Example: s!balance @member
+        """
         member = member or ctx.author
         if member.id in money:
             await ctx.send(f"<@{member.id}>'s balance is {money.get(member.id)}$.")
@@ -59,6 +72,7 @@ class Economy(commands.Cog):
                 await ctx.send(
                     f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!"
                 )
+
 
 def setup(bot):
     bot.add_cog(Economy(bot))

@@ -12,6 +12,7 @@ class HaltInvoke(Exception):
 
 class ToGlobalErrhdl(Exception):
     """Pass errhdl to global error handler."""
+
     def __init__(self, err):
         self.original = err
 
@@ -30,11 +31,11 @@ class Errhdl(commands.Cog):
             # prevents any cmds with local hdl being hdl'd here
             if hasattr(ctx.command, "on_error"):
                 return
-            
+
             # prevents any cogs with cog_command_error
             if ctx.cog and ctx.cog._get_overridden_method(ctx.cog.cog_command_error):
                 return
-            
+
         if isinstance(error, commands.errors.CommandInvokeError) and isinstance(
             error.original, HaltInvoke
         ):
