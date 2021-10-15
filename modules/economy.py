@@ -1,71 +1,70 @@
 import guilded
-from common_vars import (
-    claimed_daily,
-    commands,
-    money,
-    push_daily,
-    push_money,
-    register_in_money_db,
-)
 
 
 class Economy(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+	"""be rich. be cool."""
 
-    @commands.command(aliases=["bal"])
-    async def balance(self, ctx, member: guilded.Member = None):
-        member = member or ctx.author
-        if member.id in money:
-            await ctx.send(f"<@{member.id}>'s balance is {money.get(member.id)}$.")
-        else:
-            await register_in_money_db(member.id)
-            await ctx.send(f"<@{member.id}>'s balance is 100$.")
+	def __init__(self, bot):
+		self.bot = bot
 
-    @commands.command()
-    async def daily(self, ctx, member: guilded.Member = None):
-        member = member or ctx.author
-        if member.id in money:
-            # ...
-            if member.id not in claimed_daily:
-                money[member.id] += 1000
-                push_money()
-                if ctx.message.author.id == member.id:
-                    await ctx.send(
-                        f"<@{ctx.message.author.id}>, you've claimed your daily bonus of 1000$."
-                    )
-                    claimed_daily.append(member.id)
-                else:
-                    await ctx.send(
-                        f"<@{ctx.message.author.id}>, you've given your daily bonus of 1000$ to {member.name}. How nice!"
-                    )
-                    claimed_daily.append(ctx.message.author.id)
-                push_daily()
-            else:
-                await ctx.send(
-                    f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!"
-                )
-        else:
-            await register_in_money_db(member.id)
-            if member.id not in claimed_daily:
-                money[member.id] += 1000
-                push_money()
-                if ctx.message.author.id == member.id:
-                    await ctx.send(
-                        f"<@{ctx.message.author.id}>, you've claimed your daily bonus of 1000$."
-                    )
-                    claimed_daily.append(member.id)
-                else:
-                    await ctx.send(
-                        f"<@{ctx.message.author.id}>, you've given your daily bonus of 1000$ to {member.name}. How nice!"
-                    )
-                    claimed_daily.append(ctx.message.author.id)
-                push_daily()
-            else:
-                await ctx.send(
-                    f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!"
-                )
+	@commands.command(aliases=["bal"])
+	async def balance(self, ctx, member: guilded.Member = None):
+		"""
+		Shows your amount of cash, or another user's amount.
+
+		Example: s!balance @member
+		"""
+		member = member or ctx.author
+		if member.id in self.bot.db.money:
+			await ctx.send(f"<@{member.id}>'s balance is {self.bot.db.money.get(member.id)}$.")
+		else:
+			await self.bot.db.register_in_money_db(member.id)
+			await ctx.send(f"<@{member.id}>'s balance is 100$.")
+
+	@commands.command()
+	async def daily(self, ctx, member: guilded.Member = None):
+		member = member or ctx.author
+		if member.id in self.bot.db.money:
+			# ...
+			if member.id not in self.bot.db.claimed_daily:
+				self.bot.db.money[member.id] += 1000
+				self.bot.db.push_money()
+				if ctx.message.author.id == member.id:
+					await ctx.send(
+						f"<@{ctx.message.author.id}>, you've claimed your daily bonus of 1000$."
+					)
+					self.bot.db.claimed_daily.append(member.id)
+				else:
+					await ctx.send(
+						f"<@{ctx.message.author.id}>, you've given your daily bonus of 1000$ to {member.name}. How nice!"
+					)
+					self.bot.db.claimed_daily.append(ctx.message.author.id)
+				self.bot.db.push_daily()
+			else:
+				await ctx.send(
+					f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!"
+				)
+		else:
+			await self.bot.db.register_in_money_db(member.id)
+			if member.id not in self.bot.db.claimed_daily:
+				self.bot.db.money[member.id] += 1000
+				self.bot.db.push_money()
+				if ctx.message.author.id == member.id:
+					await ctx.send(
+						f"<@{ctx.message.author.id}>, you've claimed your daily bonus of 1000$."
+					)
+					self.bot.db.claimed_daily.append(member.id)
+				else:
+					await ctx.send(
+						f"<@{ctx.message.author.id}>, you've given your daily bonus of 1000$ to {member.name}. How nice!"
+					)
+					self.bot.db.claimed_daily.append(ctx.message.author.id)
+				self.bot.db.push_daily()
+			else:
+				await ctx.send(
+					f"<@{ctx.message.author.id}>, it looks like you've already claimed your daily. Try again later!"
+				)
 
 
 def setup(bot):
-    bot.add_cog(Economy(bot))
+	bot.add_cog(Economy(bot))

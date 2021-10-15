@@ -1,5 +1,5 @@
-from imports import commands, os, sys, traceback
 from db import Database
+from imports import commands, os, sys, traceback
 
 
 class ShikiBot(
@@ -25,6 +25,7 @@ async def on_message(msg):
 	pass
 
 
+
 @bot.event
 async def on_ready():
 	print("all cogs have been loaded")
@@ -32,8 +33,9 @@ async def on_ready():
 
 
 bot.load_extension("gishaku")
+bot.load_extension("modules.economy")
+bot.load_extension("modules.errhdl")
 bot.load_extension("modules.events")
 bot.load_extension("modules.general")
-bot.load_extension("modules.economy")
-bot.load_extension("modules.botowner")
+bot.load_extension("modules.hidden_cog")
 bot.run(os.environ.get("EMAIL"), os.environ.get("PASSWORD"))

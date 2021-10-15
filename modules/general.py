@@ -1,8 +1,12 @@
+import random
+
 from guilded import Embed, Member
 from guilded.ext import commands
 
 
 class General(commands.Cog):
+	"""your every-day needs commands."""
+
 	def __init__(self, bot):
 		self.bot = bot
 
@@ -26,13 +30,18 @@ class General(commands.Cog):
 
 	@commands.command()
 	async def snipe(self, ctx):
-		if ctx.message.channel.id in self.bot.db.snipe_channels:
-			things = self.bot.db.snipe_messages.get(f"{ctx.message.channel.id}")
+		"""
+		Shows the most recent deleted message in a channel, with the author.
+
+		Time to expose your friends... :flushed:
+		"""
+		if ctx.message.channel.id in self.snipe_channels:
+			things = self.snipe_messages.get(f"{ctx.message.channel.id}")
 			embed = Embed(description=f"{things[1]}", color=0xFFFFFF)
 			user = ctx.team.get_member(things[0])
 			embed.set_author(name=f"{user.name}", icon_url=f"{user.avatar_url}")
 			time = things[2]
-			time_final = self.bot.db.convert_time(time[11:-5])
+			time_final = self.convert_time(time[11:-5])
 			embed.set_footer(text=f"{time_final}")
 			await ctx.send(embed=embed)
 		else:
@@ -40,13 +49,18 @@ class General(commands.Cog):
 
 	@commands.command()
 	async def editsnipe(self, ctx):
-		if ctx.message.channel.id in self.bot.db.editsnipe_channels:
-			things = self.bot.db.editsnipe_messages.get(f"{ctx.message.channel.id}")
+		"""
+		Shows the most recent edited message in a channel, with the author.
+
+		Time to expose your friends... :flushed:
+		"""
+		if ctx.message.channel.id in self.editsnipe_channels:
+			things = self.editsnipe_messages.get(f"{ctx.message.channel.id}")
 			embed = Embed(description=f"{things[1]}", color=0xFFFFFF)
 			user = ctx.team.get_member(things[0])
 			embed.set_author(name=f"{user.name}", icon_url=f"{user.avatar_url}")
 			time = things[2]
-			time_final = self.bot.db.convert_time(time[11:-5])
+			time_final = self.convert_time(time[11:-5])
 			embed.set_footer(text=f"{time_final}")
 			await ctx.send(embed=embed)
 		else:
@@ -56,6 +70,11 @@ class General(commands.Cog):
 
 	@commands.command(aliases=["av", "pfp"])
 	async def avatar(self, ctx, member: Member = None):
+		"""
+		Shows the avatar of the member, by default yourself.
+
+		Example: `s!avatar @member`
+		"""
 		member = member or ctx.author
 		embed = Embed(title=f"pfp of {member.name} ☁️", color=0x000000)
 		avatar_url = str(member.avatar_url)
@@ -81,8 +100,8 @@ class General(commands.Cog):
 		for cog_name, cog in bot.cogs.items():
 			if cog_name.lower() == query.lower():
 				em = Embed(
-					title="Command list",
-					description=f"wd: `/{cog.qualified_name}`",
+					title=f"Command list ({cog_name})",
+					description=f"Do `{pre}help [command]` to view more information and usage of a command.",
 				)
 				for cmd in cog.walk_commands():
 					if any(cmd.parents) or " " in cmd.qualified_name:
@@ -91,19 +110,31 @@ class General(commands.Cog):
 				return await ctx.send(embed=em)
 		# show help for command
 		if query:
-			cmd = await bot.get_command(query, i=ctx.message)
+			cmd = await bot.get_command(query)
 			if not cmd or cmd.hidden:
-				return await ctx.send("help: :mag: Command not found.")
+				return await ctx.send(
+					"That command/module doesn't exist yet. "
+					f"Check out all the cool commands with `{pre}help`. :sunglasses:"
+				)
 			em = Embed(
 				title=cmd.name,
-				description=cmd.description or "<no description>",
+				description=cmd.description.replace(
+					"@member", random.choice("windowsboy111", "shiki")
+				)
+				if cmd.description
+				else "<no description>",
 				color=0x0000FF,
 			)
-			usage = pre + cmd.qualified_name + " "
-			for val in cmd.clean_params.values():
-				usage += f"<{val.name}>" if val.default else f"<[{val.name}]> "
-			em.add_field(name="Objective", value=cmd.help)
-			em.add_field(name="Usage", value=usage)
+			em.add_field(name="Objective", value=cmd.help or "<no help>")
+			em.add_field(
+				name="Usage",
+				value=(
+					pre + cmd.qualified_name + " " + " ".join(
+						f"[{val.name}]" if val.default else f"({val.name})"
+						for val in cmd.clean_params.values()
+					)
+				),
+			)
 			em.add_field(
 				name="Cog",
 				value="<global>" if not cmd.cog else cmd.cog.qualified_name,
@@ -124,18 +155,21 @@ class General(commands.Cog):
 						]
 					),
 				)
+			em.set_footer(text="shikiBot | v0.0.1 | [] - required, () - optional")
 			await ctx.send(embed=em)
 			return
 		# no command name supplied, list all cogs
-		em = Embed(title="Cogs list (Not Commands!)")
+		em = Embed(
+			title="Module list (Not Commands!)",
+			description="Those are the current modules. "
+			f"Use `{pre}help [module]` to see a list of commands.",
+		)
 		for cog in bot.cogs.values():
 			em.add_field(
 				name=cog.qualified_name,
 				value=cog.description or "<no description>",
 			)
-			em.set_footer(
-				text="These are not commands, but groups of commands. `/help core` and stuff"
-			)
+			em.set_footer(text="shikiBot | v0.0.1")
 		await ctx.send(embed=em)
 
 

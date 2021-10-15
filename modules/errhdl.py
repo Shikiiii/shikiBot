@@ -6,13 +6,11 @@ from guilded.ext import commands
 
 class HaltInvoke(Exception):
 	"""Halt command invoke instantly."""
-
 	pass
 
 
 class ToGlobalErrhdl(Exception):
 	"""Pass errhdl to global error handler."""
-
 	def __init__(self, err):
 		self.original = err
 
