@@ -1,4 +1,5 @@
 import guilded
+from guilded.ext import commands
 
 
 class Economy(commands.Cog):

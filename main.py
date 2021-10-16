@@ -2,16 +2,11 @@ from db import Database
 from imports import commands, os, sys, traceback
 
 
-class ShikiBot(
-	commands.Bot,
-	command_prefix="s!",
-	owner_ids=["AnbjoWYA", "dxDY9JEd"],
-	help_command=None,
-):
+class ShikiBot(commands.Bot):
 	db: Database
 
 
-bot = ShikiBot()
+bot = ShikiBot(command_prefix="s!", owner_ids=["AnbjoWYA", "dxDY9JEd"], help_command=None)
 
 
 @bot.event
