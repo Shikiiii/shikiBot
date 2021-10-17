@@ -3,7 +3,7 @@ from imports import commands, os, sys, traceback
 
 
 class ShikiBot(commands.Bot):
-	db: Database
+	db = Database()
 
 
 bot = ShikiBot(command_prefix="s!", owner_ids=["AnbjoWYA", "dxDY9JEd"], help_command=None)
