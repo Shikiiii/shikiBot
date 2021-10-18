@@ -1,31 +1,32 @@
+import os
+import sys
+from traceback import format_exc
+
 from db import Database
-from imports import commands, os, sys, traceback
+from logcfg import gLogr, name
+
+logger = gLogr("shiki")
 
 
 class ShikiBot(commands.Bot):
 	db: Database
+	logf = name
+	ver = "v0.0.1"
+
+	async def on_message(msg):
+		pass
+
+	async def on_command_error(ctx, error):
+		msg = f"Ignoring exception in command {ctx.command}:\n"
+		msg += format_exc(type(error), error, None, file=sys.stderr)
+		logger.error(msg)
+
+	async def on_ready():
+		logger.info("all cogs have been loaded")
+		logger.debug(str(bot.all_commands))
 
 
 bot = ShikiBot(command_prefix="s!", owner_ids=["AnbjoWYA", "dxDY9JEd"], help_command=None)
-
-
-@bot.event
-async def on_command_error(ctx, error):
-	print(f"Ignoring exception in command {ctx.command}:", file=sys.stderr)
-	traceback.print_exception(type(error), error, None, file=sys.stderr)
-
-
-@bot.event
-async def on_message(msg):
-	pass
-
-
-
-@bot.event
-async def on_ready():
-	print("all cogs have been loaded")
-	print(str(bot.all_commands))
-
 
 bot.load_extension("gishaku")
 bot.load_extension("modules.economy")

@@ -1,6 +1,9 @@
 import contextlib
+import sys
+from traceback import format_exc
 
 import guilded
+import lib
 from guilded.ext import commands
 
 
@@ -15,10 +18,7 @@ class ToGlobalErrhdl(Exception):
 		self.original = err
 
 
-class Errhdl(commands.Cog):
-	def __init__(self, bot):
-		self.bot = bot
-
+class Errhdl(lib.Cog, hidden=True):
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
 		"""General global error handler."""
@@ -82,7 +82,7 @@ class Errhdl(commands.Cog):
 		# All other Errors not returned come here. And we can just print the default TraceBack.
 		print(
 			f"Ignoring exception in command `{ctx.command.qualified_name}`:\n"
-			f"\n```{ctx.bot.tls.get_exc(error)}\n```",
+			f"\n```{format_exc(type(error), error, None, file=sys.stderr)}\n```",
 			ctx.guild,
 		)
 		return 1

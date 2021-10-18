@@ -1,4 +1,4 @@
-import random
+from random import choice
 
 from guilded import Embed, Member
 from guilded.ext import commands
@@ -90,24 +90,29 @@ class General(commands.Cog):
 		"""Shows this message"""
 		bot = ctx.bot
 		pre = ctx.prefix
+		addf = lambda e, n, v: e.add_field(name=n, value=v)
+		sf = lambda e, s="": e.set_footer(text=f"shikiBot | {bot.ver}" + s)
+		hlpf = lambda em, cmd: addf(em, cmd.name, cmd.short_doc or "<no help>")
 		# check if user wants help for global cog
 		if query.lower() == "global":
 			em = Embed(title="Command list (global)", color=0x0000FF)
 			for cmd in bot.walk_commands():
-				em.add_field(name=cmd.name, value=cmd.short_doc or "<no help>")
-			return await ctx.send(embed=em)
+				hlpf(em, cmd)
+				addf(em, cmd.name, cmd.short_doc or "<no help>")
+			return await ctx.send(embed=sf(em))
 		# check if user wants help for a cog
 		for cog_name, cog in bot.cogs.items():
+			if getattr(cog, 'hidden', False):
+				continue
 			if cog_name.lower() == query.lower():
 				em = Embed(
 					title=f"Command list ({cog_name})",
 					description=f"Do `{pre}help [command]` to view more information and usage of a command.",
 				)
 				for cmd in cog.walk_commands():
-					if any(cmd.parents) or " " in cmd.qualified_name:
-						continue
-					em.add_field(name=cmd.name, value=cmd.short_doc or "<no help>")
-				return await ctx.send(embed=em)
+					if not any(cmd.parents) and " " not in cmd.qualified_name:
+						hlpf(em, cmd)
+				return await ctx.send(embed=sf(em))
 		# show help for command
 		if query:
 			cmd = await bot.get_command(query)
@@ -119,44 +124,29 @@ class General(commands.Cog):
 			em = Embed(
 				title=cmd.name,
 				description=cmd.description.replace(
-					"@member", random.choice("windowsboy111", "shiki")
+					"@member", choice("@windowsboy111", "@shiki")
 				)
 				if cmd.description
 				else "<no description>",
 				color=0x0000FF,
 			)
-			em.add_field(name="Objective", value=cmd.help or "<no help>")
-			em.add_field(
-				name="Usage",
-				value=(
-					pre + cmd.qualified_name + " " + " ".join(
-						f"[{val.name}]" if val.default else f"({val.name})"
-						for val in cmd.clean_params.values()
-					)
-				),
-			)
-			em.add_field(
-				name="Cog",
-				value="<global>" if not cmd.cog else cmd.cog.qualified_name,
-			)
+			addf(em, "Objective", cmd.help or "<no help>")
+			args = " ".join(f"[{val.name}]" if val.default else f"({val.name})" for val in cmd.clean_params.values())
+			addf(em, "Usage", f'{pre}{cmd.qualified_name} {args}')
+			addf(em, "Cog", cmd.cog.qualified_name if cmd.cog else "<global>")
 			if cmd.aliases:
-				em.add_field(
-					name="Aliases",
-					value=", ".join(cmd.aliases),
-				)
-			if hasattr(cmd, "commands") and any(cmd.commands):
+				addf(em, "Aliases", ", ".join(cmd.aliases))
+			if getattr(cmd, 'commands', False):
 				# it is a group
-				em.add_field(
-					name="Sub-Commands",
-					value="".join(
-						[
-							f"`{pre}{cmd.qualified_name}`: {cmd.short_doc}\n"
-							for cmd in cmd.commands
-						]
-					),
+				addf(
+					em,
+					"Sub-Commands",
+					"\n".join(
+						f"`{pre}{cmd.qualified_name}`: {cmd.short_doc}"
+						for cmd in cmd.commands
+					)
 				)
-			em.set_footer(text="shikiBot | v0.0.1 | [] - required, () - optional")
-			await ctx.send(embed=em)
+			await ctx.send(embed=sf(em, " | [] - required, () - optional"))
 			return
 		# no command name supplied, list all cogs
 		em = Embed(
@@ -165,12 +155,9 @@ class General(commands.Cog):
 			f"Use `{pre}help [module]` to see a list of commands.",
 		)
 		for cog in bot.cogs.values():
-			em.add_field(
-				name=cog.qualified_name,
-				value=cog.description or "<no description>",
-			)
-			em.set_footer(text="shikiBot | v0.0.1")
-		await ctx.send(embed=em)
+			if not getattr(cog, 'hidden', True):
+				addf(em, cog.qualified_name, cog.description or "<no description>")
+		await ctx.send(embed=sf(em))
 
 
 def setup(bot):

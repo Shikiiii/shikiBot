@@ -5,13 +5,15 @@ from typing import Any, Union
 from guilded import ChatChannel, User
 from guilded.ext import commands
 
+import lib
 
-class Hidden(commands.Cog):
+
+class Hidden(lib.Cog, hidden=True):
 	def __init__(self, bot):
 		self.bot = bot
 		self.owners = ["AnbjoWYA", "dxDY9JEd", "4WPbEZwd"]
 
-	@commands.command(name="eval", hidden=True)
+	@commands.command(name="eval")
 	async def _eval(self, ctx, *, code='"bruh wat to eval"'):
 		if ctx.author.id not in self.owners:
 			return
@@ -25,7 +27,7 @@ class Hidden(commands.Cog):
 				+ "\n```"
 			)
 
-	@commands.command(name="exec", hidden=True)
+	@commands.command(name="exec")
 	async def _exec(self, ctx, *, code='await ctx.send("????")'):
 		if ctx.author.id not in self.owners:
 			return
@@ -60,29 +62,33 @@ class Hidden(commands.Cog):
 				+ "\n```"
 			)
 
-	@commands.command(hidden=True)
+	@commands.command()
 	async def myid(self, ctx):
 		await ctx.send(ctx.message.author.id)
 
-	@commands.command(name="id", hidden=True)
+	@commands.command(name="id")
 	async def _id(self, ctx, thing: Union[ChatChannel, User, Any]):
 		try:
 			await ctx.send(thing.id)
 		except Exception:
 			pass
 
-	@commands.command(hidden=True)
+	@commands.command()
 	async def test(self, ctx, *, s):
 		await ctx.send(s)
 
-	@commands.command(hidden=True)
+	@commands.command()
 	async def allcmds(self, ctx):
 		await ctx.send(str(self.bot.all_commands))
 
-	@commands.command(hidden=True)
+	@commands.command()
 	async def allcogs(self, ctx):
 		await ctx.send(str(self.bot.cogs))
 
+	@commands.command()
+	async def logs(self, ctx):
+		with open(ctx.bot.logf, 'r') as f:
+			await ctx.send(f"```\n{f.read()}```")
 
 def setup(bot):
 	bot.add_cog(Hidden(bot))
