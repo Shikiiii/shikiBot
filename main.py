@@ -9,7 +9,7 @@ logger = gLogr("shiki")
 
 
 class ShikiBot(commands.Bot):
-	db: Database
+	db = Database()
 	logf = name
 	ver = "v0.0.1"
 

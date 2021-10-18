@@ -1,0 +1,9 @@
+{
+	"python.formatting.provider": "none",
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"python.linting.flake8Args": [
+		"--ignore",
+		"W191"
+	]
+}
