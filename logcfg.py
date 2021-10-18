@@ -4,7 +4,7 @@ from logging import *
 
 name = datetime.utcnow().strftime("logs/%Y-%m-%d_%H-%M.log")
 c_handler = StreamHandler(sys.stdout)
-f_handler = FileHandler(name, 'a', 'utf-8')
+f_handler = FileHandler(name, 'w+', 'utf-8')
 c_handler.setLevel(15)
 f_handler.setLevel(5)
 
