@@ -2,13 +2,15 @@ import os
 import sys
 from traceback import format_exc
 
+from guilded.ext.commands import Bot
+
 from db import Database
 from logcfg import gLogr, name
 
 logger = gLogr("shiki")
 
 
-class ShikiBot(commands.Bot):
+class ShikiBot(Bot):
 	db = Database()
 	logf = name
 	ver = "v0.0.1"

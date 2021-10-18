@@ -7,7 +7,7 @@ class Cog(commands.Cog):
 		self.bot = bot
 		self.owners = ["AnbjoWYA", "dxDY9JEd", "4WPbEZwd"]
 		if self.hidden:
-			for cmd in self.walk_commands():
+			for cmd in self.get_commands():
 				cmd.hidden = True
 
 	def __init_subclass__(cls, hidden: bool = False):
