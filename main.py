@@ -15,15 +15,15 @@ class ShikiBot(Bot):
 	logf = name
 	ver = "v0.0.1"
 
-	async def on_message(msg):
-		pass
+	async def on_message(self, msg):
+		await self.process_commands(msg)
 
-	async def on_command_error(ctx, error):
+	async def on_command_error(self, ctx, error):
 		msg = f"Ignoring exception in command {ctx.command}:\n"
 		msg += format_exc(type(error), error, None, file=sys.stderr)
 		logger.error(msg)
 
-	async def on_ready():
+	async def on_ready(self):
 		logger.info("all cogs have been loaded")
 		logger.debug(str(bot.all_commands))
 
