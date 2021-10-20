@@ -82,7 +82,7 @@ class Errhdl(lib.Cog, hidden=True):
 		# All other Errors not returned come here. And we can just print the default TraceBack.
 		print(
 			f"Ignoring exception in command `{ctx.command.qualified_name}`:\n"
-			f"\n```{format_exc(type(error), error, None, file=sys.stderr)}\n```",
+			f"\n```{format_exc(type(error), error, None)}\n```",
 			ctx.guild,
 		)
 		return 1
