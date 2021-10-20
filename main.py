@@ -16,7 +16,8 @@ class ShikiBot(Bot):
 	ver = "v0.0.1"
 
 	async def on_message(self, msg):
-		await self.process_commands(msg)
+		#await self.process_commands(msg)
+		pass
 
 	async def on_command_error(self, ctx, error):
 		msg = f"Ignoring exception in command {ctx.command}:\n"
